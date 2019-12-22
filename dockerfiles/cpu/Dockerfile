@@ -1,6 +1,7 @@
 # image for running DeepFigures
 
-FROM tensorflow/tensorflow:latest-py3
+FROM tensorflow/tensorflow:1.5.1-py3
+# FROM tensorflow/tensorflow:latest-py3
 
 ENV LC_ALL C.UTF-8
 
@@ -53,10 +54,10 @@ ADD ./requirements.txt /work
 
 RUN pip3 install --upgrade pip \
  && pip install Cython==0.25.2
-RUN pip3 install -r ./requirements.txt
+RUN pip3 install --no-use-pep517 -r ./requirements.txt
 
 ADD ./vendor/tensorboxresnet /work/vendor/tensorboxresnet
-RUN pip3 install -e /work/vendor/tensorboxresnet
+RUN pip3 install --no-use-pep517 -e /work/vendor/tensorboxresnet
 
 ADD . /work
 RUN pip3 install --quiet -e /work

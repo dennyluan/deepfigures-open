@@ -1,6 +1,7 @@
 # docker image for running DeepFigures on a gpu
 
-FROM tensorflow/tensorflow:latest-gpu-py3
+FROM tensorflow/tensorflow:1.5.1-gpu-py3
+# FROM tensorflow/tensorflow:latest-gpu-py3
 
 ENV LC_ALL C.UTF-8
 
@@ -9,7 +10,7 @@ ENV LC_ALL C.UTF-8
 ENV TZ=Europe/Minsk
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Install lib-jasper
+# Install --no-use-pep517 lib-jasper
 RUN apt-get update
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main"
@@ -53,12 +54,12 @@ ADD ./requirements.txt /work
 
 RUN pip3 install --upgrade pip \
  && pip install Cython==0.25.2
-RUN pip3 install -r ./requirements.txt
+RUN pip3 install --no-use-pep517 -r ./requirements.txt
 
 ADD ./vendor/tensorboxresnet /work/vendor/tensorboxresnet
-RUN pip3 install -e /work/vendor/tensorboxresnet
+RUN pip3 install --no-use-pep517 -e /work/vendor/tensorboxresnet
 
 ADD . /work
-RUN pip3 install --quiet -e /work
+RUN pip3 install --no-use-pep517 --quiet -e /work
 
 CMD [ "/bin/bash" ]
